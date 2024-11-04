@@ -38,15 +38,15 @@ echo "# train="$train, "test="${test_set}, "model="$model
 echo "# select active feature & convert data format"
 echo "# processing training set"
 echo "#   $train"
-./select.py -m $feature -a $active -f $fv_index < $train > $exp/train_active
-./dense.py $fv_index < $exp/train_active > $exp/train_dense
+python2 ./select.py -m $feature -a $active -f $fv_index < $train > $exp/train_active
+python2 ./dense.py $fv_index < $exp/train_active > $exp/train_dense
 
 echo "# processing test sets"
 for t in $test_set
 do
     echo "#   $t"
     t_norm=`echo $t | gawk -F"/" '{print $NF }'`
-    ./select.py -m $feature -a $active -f $fv_index < $t > $exp/${t_norm}.active
+    python2 ./select.py -m $feature -a $active -f $fv_index < $t > $exp/${t_norm}.active
     #./dense.py < $exp/${t_norm}.active > $exp/${t_norm}.dense
 done
 
@@ -61,11 +61,11 @@ do
     echo "# model training completed, saved to $exp/$model"
 
     echo "# running model feature weighting analysis"
-    ./get_feature_weight.py $exp/train_dense $exp/$model $active > $exp/$model_weight 2>$exp/$model_weight.log
+    python2 ./get_feature_weight.py $exp/train_dense $exp/$model $active > $exp/$model_weight 2>$exp/$model_weight.log
     echo "# model feature weighting analysis done, result: $exp/$model_weight"
     
     echo "# evaluation in progress"
-    ./eval.py -m $exp/$model -i $exp/train_active -o $exp/$eval_train -f $fv_index
+    python2 ./eval.py -m $exp/$model -i $exp/train_active -o $exp/$eval_train -f $fv_index
     printf  "\n############## train ##############\n"
     cat $exp/$eval_train.stat
     tail -n1 $exp/$eval_train.stat >> $exp/$eval_train.all
@@ -74,7 +74,7 @@ do
     do
         t_norm=`echo $t | gawk -F"/" '{print $NF}'`
         t_output="$exp/${t_norm}_$i"
-        ./eval.py -m $exp/$model -i $exp/${t_norm}.active -o $t_output -f $fv_index
+        python2 ./eval.py -m $exp/$model -i $exp/${t_norm}.active -o $t_output -f $fv_index
         printf "\n############## test($t)  ##############\n"
         cat $t_output.stat
         cat $t_output.stat >> $exp/${t_norm}.stat_all
