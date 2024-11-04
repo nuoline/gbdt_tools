@@ -7,7 +7,7 @@ Date: 2021/11/21 16:03:39
 """
 import sys
 import os
-kRoot = os.path.dirname(os.path.abspath(__file__))+"./"
+kRoot = os.path.dirname(os.path.abspath(__file__))
 sys.path += [kRoot+'/pylib']
 import tree_model
 
@@ -16,7 +16,7 @@ class RandomForest :
         self.model = tree_model.LoadModel(model_path)
         self.fs = self.LoadFeatureSelector(meta)
 
-    # ¼Ù¶¨metaÀïµÄÌØÕ÷ÊÇÓĞĞòµÄ, ÇÒÍ¨¹ı¼Ó#À´É¾³ıÌØÕ÷
+    # å‡å®šmetaé‡Œçš„ç‰¹å¾æ˜¯æœ‰åºçš„, ä¸”é€šè¿‡åŠ #æ¥åˆ é™¤ç‰¹å¾
     def LoadFeatureSelector(self, meta):      
         fs = None
         
@@ -49,7 +49,7 @@ class RandomForest :
 
         result = tree_model.OnlineTesting(self.model, features)
 
-        # ÕâÀïÊÇÎªÁË´¦ÀígbdtµÄ[0,1]µÄÁ¬ĞøÖµ
+        # è¿™é‡Œæ˜¯ä¸ºäº†å¤„ç†gbdtçš„[0,1]çš„è¿ç»­å€¼
         if result[0] > 0.48 :
             result[0] = 1 
         else :
