@@ -1,0 +1,6 @@
+1.介绍
+GBDT工具，包括训练和预测
+2.使用
+训练：run_exp.sh num
+num是epoch次数
+预测：eval.py
